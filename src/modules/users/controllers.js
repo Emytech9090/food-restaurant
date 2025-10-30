@@ -1,4 +1,4 @@
-import userService from "./services";
+import userService from "./services.js";
 
 class UserController {
   getAll = async (req, res, next) => {
@@ -80,7 +80,7 @@ class UserController {
       next(error);
     }
   };
-  deleteAll = async (req, req, next) => {
+  deleteAll = async (req, res, next) => {
     try {
       const { userIds } = req.body;
       const userResponse = userService.updateAll({

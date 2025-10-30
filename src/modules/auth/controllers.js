@@ -1,4 +1,4 @@
-import authservice from "./services";
+import authservice from "./services.js";
 class AuthController {
   signUp = async (req, res, next) => {
     try {
