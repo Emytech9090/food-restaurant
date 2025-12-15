@@ -1,11 +1,15 @@
 import mongoose from "mongoose";
 
-const foodSchema = mongoose.Schema({
+const foodSchema = new mongoose.Schema({
   name: {
     type: String,
   },
   description: {
     type: String,
+  },
+  restaurantId: {
+    type: mongoose.Types.ObjectId,
+    ref: "Restaurant",
   },
   image: {
     type: String,

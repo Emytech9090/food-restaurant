@@ -5,10 +5,11 @@ import cors from "cors";
 import appRouter from "./routes/index.js";
 import corsOption from "./config/cors.js";
 import { errorHandler } from "./middleware/errorHandler.js";
-
+import cookieParser from "cookie-parser";
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors(corsOption));
 app.use(appRouter);
 app.use(errorHandler);

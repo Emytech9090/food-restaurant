@@ -4,8 +4,11 @@ class UserController {
   getAll = async (req, res, next) => {
     try {
       const { page, limit, sort, orderBy } = req.query;
-      const userResponse = userService.getAll({
-        query: { page, limit, sort, orderBy },
+      const userResponse = await userService.getAll({
+        page,
+        limit,
+        sort,
+        orderBy,
       });
       res.status(userResponse.statusCode).json(userResponse);
     } catch (error) {
@@ -15,7 +18,7 @@ class UserController {
   getOne = async (req, res, next) => {
     try {
       const { userId } = req.params;
-      const userResponse = userService.getOne({
+      const userResponse = await userService.getOne({
         userId,
       });
       res.status(userResponse.statusCode).json(userResponse);
@@ -26,7 +29,7 @@ class UserController {
   getSession = async (req, res, next) => {
     try {
       const { userId } = req.user;
-      const userResponse = userService.getSession({
+      const userResponse = await userService.getSession({
         userId,
       });
       res.status(userResponse.statusCode).json(userResponse);
@@ -38,30 +41,25 @@ class UserController {
   updateOne = async (req, res, next) => {
     try {
       const { userId } = req.params;
-      const userResponse = userService.updateOne({
+      const { firstName, lastName, email } = req.body;
+
+      const userResponse = await userService.updateOne({
         userId,
+        data: { firstName, lastName, email },
       });
       res.status(userResponse.statusCode).json(userResponse);
     } catch (error) {
       next(error);
     }
   };
-  updateAll = async (req, res, next) => {
-    try {
-      const { userIds } = req.body;
-      const userResponse = userService.updateAll({
-        userIds,
-      });
-      res.status(userResponse.statusCode).json(userResponse);
-    } catch (error) {
-      next(error);
-    }
-  };
+
   updateSession = async (req, res, next) => {
     try {
       const { userId } = req.user;
-      const userResponse = userService.updateSession({
+      const { firstName, lastName, email } = req.body;
+      const userResponse = await userService.updateSession({
         userId,
+        data: { firstName, lastName, email },
       });
       res.status(userResponse.statusCode).json(userResponse);
     } catch (error) {
@@ -72,7 +70,7 @@ class UserController {
   deleteOne = async (req, res, next) => {
     try {
       const { userId } = req.params;
-      const userResponse = userService.updateOne({
+      const userResponse = await userService.deleteOne({
         userId,
       });
       res.status(userResponse.statusCode).json(userResponse);
@@ -80,21 +78,11 @@ class UserController {
       next(error);
     }
   };
-  deleteAll = async (req, res, next) => {
-    try {
-      const { userIds } = req.body;
-      const userResponse = userService.updateAll({
-        userIds,
-      });
-      res.status(userResponse.statusCode).json(userResponse);
-    } catch (error) {
-      next(error);
-    }
-  };
+
   deleteSession = async (req, res, next) => {
     try {
       const { userId } = req.user;
-      const userResponse = userService.deleteSession({
+      const userResponse = await userService.deleteSession({
         userId,
       });
       res.status(userResponse.statusCode).json(userResponse);

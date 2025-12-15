@@ -2,6 +2,7 @@ import { Router } from "express";
 import restaurantController from "./controllers.js";
 const restaurantRouter = Router();
 
+restaurantRouter.post("/add-restaurant", restaurantController.addRestaurant);
 restaurantRouter.get("/all", restaurantController.getAll);
 restaurantRouter.get("/:restaurantId", restaurantController.getOne);
 restaurantRouter.patch("/all", restaurantController.updateAll);

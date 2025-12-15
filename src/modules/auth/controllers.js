@@ -3,10 +3,12 @@ class AuthController {
   signUp = async (req, res, next) => {
     try {
       const { password, email } = req.body;
-      const authResponse = authservice.signUp({
+      const authResponse = await authservice.signUp({
         password,
         email,
+        setCookie: res.cookie.bind(res),
       });
+
       res.status(authResponse.statusCode).json(authResponse);
     } catch (error) {
       next(error);
@@ -15,7 +17,7 @@ class AuthController {
   signIn = async (req, res, next) => {
     try {
       const { password, email } = req.body;
-      const authResponse = authservice.signIn({
+      const authResponse = await authservice.signIn({
         password,
         email,
       });
@@ -24,9 +26,9 @@ class AuthController {
       next(error);
     }
   };
-  signOut = async (req, res) => {
+  signOut = async (req, res, next) => {
     try {
-      const authResponse = authservice.signOut();
+      const authResponse = await authservice.signOut();
       res.status(authResponse.statusCode).json(authResponse);
     } catch (error) {
       next(error);
@@ -35,9 +37,11 @@ class AuthController {
   forgotPassword = async (req, res, next) => {
     try {
       const { email } = req.body;
-      const authResponse = authservice.forgotPassword({
+      const authResponse = await authservice.forgotPassword({
         email,
+        setCookie: res.cookie.bind(res),
       });
+
       res.status(authResponse.statusCode).json(authResponse);
     } catch (error) {
       next(error);
@@ -45,22 +49,29 @@ class AuthController {
   };
   resetPassword = async (req, res, next) => {
     try {
-      const { email, otp } = req.body;
-      const authResponse = authservice.resetPassword({
+      const { email, otp, password } = req.body;
+      const secret = req.cookies.email_otp;
+      const authResponse = await authservice.resetPassword({
         email,
+        password,
         otp,
+        secret,
       });
       res.status(authResponse.statusCode).json(authResponse);
     } catch (error) {
       next(error);
     }
   };
+  x;
   verifyEmail = async (req, res, next) => {
     try {
       const { email, otp } = req.body;
-      const authResponse = authservice.forgotPassword({
+      const secret = req.cookies?.otp;
+
+      const authResponse = await authservice.verifyEmail({
         email,
         otp,
+        secret,
       });
       res.status(authResponse.statusCode).json(authResponse);
     } catch (error) {
@@ -70,7 +81,7 @@ class AuthController {
   verifyOtp = async (req, res) => {
     try {
       const { email, otp } = req.body;
-      const authResponse = authservice.forgotPassword({
+      const authResponse = await authservice.forgotPassword({
         email,
         otp,
       });
