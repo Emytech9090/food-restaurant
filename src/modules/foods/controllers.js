@@ -1,21 +1,55 @@
 import foodService from "./services.js";
 
 class FoodController {
-  getAll = async (req, res, next) => {
+  addFood = async (req, res, next) => {
     try {
-      const { page, limit, sort, orderBy } = req.query;
-      const foodResponse = foodService.getAll({
-        query: { page, limit, sort, orderBy },
+      const { name, description, price, restaurantId } = req.body;
+      const foodResponse = await foodService.addFood({
+        name,
+        description,
+        price,
+        restaurantId,
       });
       res.status(foodResponse.statusCode).json(foodResponse);
     } catch (error) {
       next(error);
     }
   };
+  getAll = async (req, res, next) => {
+    try {
+      const { page, limit, sort, orderBy } = req.query;
+      const foodResponse = await foodService.getAll({
+        page: parseInt(page, 10),
+        limit: parseInt(limit, 10),
+        sort,
+        orderBy,
+      });
+      res.status(foodResponse.statusCode).json(foodResponse);
+    } catch (error) {
+      next(error);
+    }
+  };
+  getAllRestaurantFood = async (req, res, next) => {
+    try {
+      const { page, limit, sort, orderBy } = req.query;
+      const { restaurantId } = req.params;
+      const foodResponse = await foodService.getAllRestaurantFood({
+        page: parseInt(page, 10),
+        limit: parseInt(limit, 10),
+        sort,
+        orderBy,
+        restaurantId,
+      });
+      res.status(foodResponse.statusCode).json(foodResponse);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   getOne = async (req, res, next) => {
     try {
       const { foodId } = req.params;
-      const foodResponse = foodService.getOne({
+      const foodResponse = await foodService.getOne({
         foodId,
       });
       res.status(foodResponse.statusCode).json(foodResponse);
@@ -27,19 +61,10 @@ class FoodController {
   updateOne = async (req, res, next) => {
     try {
       const { foodId } = req.params;
-      const foodResponse = foodService.updateOne({
+      const data = req.body;
+      const foodResponse = await foodService.updateOne({
         foodId,
-      });
-      res.status(foodResponse.statusCode).json(foodResponse);
-    } catch (error) {
-      next(error);
-    }
-  };
-  updateAll = async (req, res, next) => {
-    try {
-      const { foodIds } = req.body;
-      const foodResponse = foodService.updateAll({
-        foodIds,
+        data,
       });
       res.status(foodResponse.statusCode).json(foodResponse);
     } catch (error) {
@@ -50,19 +75,8 @@ class FoodController {
   deleteOne = async (req, res, next) => {
     try {
       const { foodId } = req.params;
-      const foodResponse = foodService.updateOne({
+      const foodResponse = await foodService.deleteOne({
         foodId,
-      });
-      res.status(foodResponse.statusCode).json(foodResponse);
-    } catch (error) {
-      next(error);
-    }
-  };
-  deleteAll = async (req, req, next) => {
-    try {
-      const { foodIds } = req.body;
-      const foodResponse = foodService.updateAll({
-        foodIds,
       });
       res.status(foodResponse.statusCode).json(foodResponse);
     } catch (error) {

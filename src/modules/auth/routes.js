@@ -7,6 +7,7 @@ authRouter.post("/sign-up", authController.signUp);
 authRouter.post("/sign-in", authController.signIn);
 authRouter.post("/sign-out", authController.signOut);
 authRouter.post("/forgot-password", authController.forgotPassword);
+authRouter.post("/reset-password", authController.resetPassword);
 authRouter.post("/verify-email", authController.verifyEmail);
 authRouter.post("/verify-otp", authController.verifyOtp);
 

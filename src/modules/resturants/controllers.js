@@ -1,10 +1,22 @@
 import restaurantService from "./services.js";
 
 class RestaurantController {
+  addRestaurant = async (req, res, next) => {
+    try {
+      const { name, description } = req.body;
+      const restaurantResponse = await restaurantService.addRestaurant({
+        name,
+        description,
+      });
+      res.status(restaurantResponse.statusCode).json(restaurantResponse);
+    } catch (error) {
+      next(error);
+    }
+  };
   getAll = async (req, res, next) => {
     try {
       const { page, limit, sort, restaurantBy } = req.query;
-      const restaurantResponse = restaurantService.getAll({
+      const restaurantResponse = await restaurantService.getAll({
         query: { page, limit, sort, restaurantBy },
       });
       res.status(restaurantResponse.statusCode).json(restaurantResponse);
