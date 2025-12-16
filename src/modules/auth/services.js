@@ -46,6 +46,7 @@ class Authservice {
       subject: "Email Verification",
       to: email,
       template: "otp",
+      data: { otp },
     });
     return {
       statusCode: 200,
@@ -90,12 +91,12 @@ class Authservice {
       envs.JWT_ACCESS_TOKEN_SECRET,
       { expiresIn: "1d" }
     );
-    await sendEmail({
-      subject: "Welcome to food man",
-      to: email,
-      htmlTemplate: "login",
-      data: { email },
-    });
+    // await sendEmail({
+    //   subject: "Welcome to food man",
+    //   to: email,
+    //   htmlTemplate: "login",
+    //   data: { email },
+    // });
     return {
       data: { accessToken },
       statusCode: 200,
